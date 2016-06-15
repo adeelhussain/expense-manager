@@ -13,9 +13,5 @@ var router = express.Router();
 router.get('/', auth.isAuthenticated(), categoryController.getUserCategories);
 router.get('/:id', auth.isAuthenticated(), categoryController.getUserCategory);
 router.post('/', auth.isAuthenticated(), categoryController.create);
-/*router.post('/', categoryController.create);
- router.put('/:id', categoryController.update);
- router.patch('/:id', categoryController.update);
- router.delete('/:id', categoryController.destroy);*/
 
 module.exports = router;
