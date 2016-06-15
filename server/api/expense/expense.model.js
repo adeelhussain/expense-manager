@@ -9,6 +9,10 @@ let ExpenseSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  amount: {
+    type: Number,
+    required: true
+  },
   categories: [{
     type: Schema.ObjectId,
     ref: 'Category'

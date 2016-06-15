@@ -118,7 +118,7 @@ function _validateExpenseEntryData(expenseData) {
 function _extractRequiredExpenseData(expenseData) {
   let requiredExpenseData = {
     name: expenseData.name,
-
+    amount: expenseData.amount,
     //TODO: Handle if required the non-existing category Id
     categories: expenseData.categories
   };
