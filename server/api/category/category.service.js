@@ -19,7 +19,7 @@ function create(categoryData, userId, cb) {
 
   Category.create(category, function (err, category) {
     if (err) {
-      cb(err, null);
+     return cb(err, null);
     }
 
     cb(null, category);
@@ -27,6 +27,23 @@ function create(categoryData, userId, cb) {
 
 }
 
+/**
+ * Load categoryByName
+ * @param userId
+ * @param keyword
+ */
+function findByKeyword(userId, keyword, cb) {
+  var name = new RegExp(keyword, 'i');
+  //TODO: Limit result
+  Category.find({user: userId, name: name}, function (err, category) {
+    if (err) {
+      return cb(err, null);
+    }
+
+    cb(null, category);
+  });
+
+}
 
 /**
  * List all categories of a user
@@ -36,7 +53,7 @@ function create(categoryData, userId, cb) {
 function listUserCategories(userId, cb) {
   Category.find({user: userId}, 'name', function (err, categories) {
     if (err) {
-      cb(err, null);
+      return cb(err, null);
     }
 
     //TODO: Process categories here, if required!
@@ -54,7 +71,7 @@ function listUserCategories(userId, cb) {
 function getUserCategory(userId, categoryId, cb) {
   Category.findOne({user: userId, _id: categoryId}, 'name', function (err, category) {
     if (err) {
-      cb(err, null);
+      return cb(err, null);
     }
 
     //TODO: Process category here, if required!
@@ -69,8 +86,10 @@ function _validateCategoryData(categoryData) {
 
 let contactService = {
   create,
+  findByKeyword,
   getUserCategory,
   listUserCategories
+
 };
 
 export default contactService;

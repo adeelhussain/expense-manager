@@ -11,6 +11,7 @@ import * as categoryController from './category.controller';
 var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), categoryController.getUserCategories);
+router.get('/find-by-name', auth.isAuthenticated(), categoryController.findByKeyword);
 router.get('/:id', auth.isAuthenticated(), categoryController.getUserCategory);
 router.post('/', auth.isAuthenticated(), categoryController.create);
 

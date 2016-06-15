@@ -1,0 +1,121 @@
+<div class="container">
+  <div class="page-header">
+    <h3>Manage Expense</h3>
+  </div>
+
+  <div class="wrapper-md">
+    <button class="btn btn-default m-b-lg" ng-click="Expense.toggleAddEntry();">Add New Entry</button>
+    <table class="table table-bordered table-hover table-condensed bg-white-only expense-table table-responsive">
+      <tr class="text-center" style="font-weight: bold">
+        <td class="name-col">Entry Name</td>
+        <td class="amount-col">Amount</td>
+        <td class="category-col">Category</td>
+        <td>Actions</td>
+      </tr>
+
+      <form name="newEntryForm">
+        <tr ng-show="Expense.addingNew">
+
+          <td class="v-middle">
+        <span class="editable-wrap editable-text">
+          <div class="editable-controls form-group">
+            <input type="text" name="name" required="required" class="editable-input form-control"
+                   ng-model="Expense.newEntry.name">
+          </div>
+        </span>
+          </td>
+
+          <td class="v-middle">
+        <span class="editable-wrap editable-text">
+          <div class="editable-controls form-group">
+            <input type="number" name="amount" required="required" class="editable-input form-control"
+                   ng-model="Expense.newEntry.amount">
+          </div>
+        </span>
+          </td>
+
+          <td class="v-middle">
+        <span class="editable-wrap editable-text">
+          <div class="editable-controls form-group">
+            <!-- TODO: Add ng-tags here-->
+            <tags-input ng-model="Expense.newEntry.categories" class="ti-input-lg">
+              <auto-complete source="Expense.loadCategories($query)"></auto-complete>
+            </tags-input>
+            <!--<input type="text" name="name" required="required" class="editable-input form-control"
+                   ng-model="Expense.newEntry.categories">-->
+          </div>
+        </span>
+          </td>
+
+          <td class="expense-actions-btn-wrapper">
+            <button type="submit" ng-click="Expense.addEntry(newEntryForm.$valid, Expense.newEntry)"
+                    class="btn btn-sm btn-info"
+                    aria-disabled="false">
+              save
+            </button>
+            <button type="button" ng-click="Expense.toggleAddEntry()" class="btn btn-sm btn-default"
+                    aria-disabled="false">
+              Cancel
+            </button>
+          </td>
+        </tr>
+      </form>
+
+
+      <tr class="text-center" ng-repeat="entry in Expense.entries">
+        <td class="v-middle">
+        <span ng-hide="entry.isEdit">
+          {{entry.name}}
+        </span>
+        <span class="editable-wrap editable-text ng-scope" ng-show="entry.isEdit">
+          <div class="editable-controls form-group">
+            <input type="text" name="name" class="editable-input form-control input-sm" ng-model="entry.firstName">
+          </div>
+        </span>
+        </td>
+        <td class="v-middle">
+        <span ng-hide="entry.isEdit">
+          {{entry.amount}}
+        </span>
+        <span class="editable-wrap editable-text ng-scope" ng-show="entry.isEdit">
+          <div class="editable-controls form-group">
+            <input type="text" name="name" class="editable-input form-control input-sm" ng-model="entry.lastName">
+          </div>
+        </span>
+        </td>
+        <td class="v-middle">
+        <span ng-hide="entry.isEdit">
+          {{entry.categories}}
+        </span>
+        <span class="editable-wrap editable-text ng-scope" ng-show="entry.isEdit">
+          <div class="editable-controls form-group">
+            <input type="text" name="name" class="editable-input form-control input-sm" ng-model="entry.email">
+          </div>
+        </span>
+        </td>
+
+        <td style="white-space: nowrap">
+          <div class="buttons">
+            <button class="btn btn-sm btn-info" ng-show="entry.isEdit"
+                    ng-click="Expense.SaveEditedentry($event, $index)">save
+            </button>
+            <button class="btn btn-sm btn-danger" ng-show="entry.isEdit" ng-click="Expense.cancelEdit($event, $index)">
+              cancel
+            </button>
+            <button class="btn btn-sm btn-info" ng-hide="entry.isEdit" ng-click="Expense.editUser($event, $index)"><span
+              class="glyphicon glyphicon-edit"></span></button>
+            <!--<button class="btn btn-sm btn-danger" ng-hide="entry.isEdit" ng-click="Expense.removeEntr($event, $index)">
+              <span class="glyphicon glyphicon-trash"></span></button>-->
+          </div>
+        </td>
+      </tr>
+      <tr class="" ng-if="!Expense.entries.length">
+        <td class="text-center" colspan="4">
+          No Entries Found<!--, want to add <a href ng-click="Expense.toggleAddEntry()">new</a>?-->
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+

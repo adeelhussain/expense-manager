@@ -17,7 +17,7 @@ export function getUserCategories(req, res) {
 
   CategoryService.listUserCategories(user._id, function (err, categories) {
     if (err) {
-      res.status(500).json( err.message);
+      res.status(500).json(err.message);
     }
     res.status(200).json(categories);
   })
@@ -35,7 +35,7 @@ export function getUserCategory(req, res) {
 
   CategoryService.getUserCategory(user._id, categoryId, function (err, categories) {
     if (err) {
-      res.status(500).json( err.message);
+      res.status(500).json(err.message);
     }
     res.status(200).json(categories);
   })
@@ -54,8 +54,21 @@ export function create(req, res) {
 
   CategoryService.create(categoryData, user._id, function (err, category) {
     if (err) {
-      return res.status(500).json( err.message);
+      return res.status(500).json(err.message);
     }
     res.status(200).json(category);
   })
+}
+
+export function findByKeyword(req, res) {
+  let user = req.user;
+  let keyword = req.query.keyword;
+  CategoryService.findByKeyword(user._id, keyword, function (err, category) {
+
+    if (err) {
+      return res.status(500).json(err.message);
+    }
+    res.status(200).json(category);
+  })
+
 }
