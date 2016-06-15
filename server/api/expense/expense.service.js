@@ -60,6 +60,7 @@ function getUserExpenseEntry(userId, expenseId, cb) {
  */
 function listUserExpenses(userId, cb) {
   Expense.find({user: userId})
+    .sort({'createdAt': -1})
     .populate('categories')
     .exec(function (err, expenseEntries) {
 
