@@ -39,7 +39,10 @@ function create(expenseData, userId, cb) {
 function getUserExpenseEntry(userId, expenseId, cb) {
 
   Expense.findOne({user: userId, _id: expenseId})
-    .populate('categories')
+    .populate({
+      path: 'categories',
+      select: 'name'
+    })
     .exec(function (err, expenseEntry) {
       if (err) {
         cb(err, null);
@@ -59,7 +62,6 @@ function listUserExpenses(userId, cb) {
   Expense.find({user: userId})
     .populate('categories')
     .exec(function (err, expenseEntries) {
-      console.log(arguments)
 
       if (err) {
         cb(err, null);
