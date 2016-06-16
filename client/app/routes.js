@@ -32,18 +32,38 @@
           controller: 'HomeController',
           controllerAs: 'Home'
         })*/
-        .state('expense', {
-          url: '/expense-manager',
-          templateUrl: 'app/expense/expense.html',
-          controller: 'ExpenseController',
-          controllerAs: 'Expense'
+
+        .state('home', {
+          views: {
+            'nav@': {
+              templateUrl: 'components/navbar/navbar.html',
+              controller: 'NavbarController',
+              controllerAs: 'nav'
+            }
+          },
+          authenticate: true
         })
 
-        .state('stats', {
+        .state('home.expense', {
+          url: '/expense-manager',
+          views: {
+            'container@': {
+              templateUrl: 'app/expense/expense.html',
+              controller: 'ExpenseController',
+              controllerAs: 'Expense'
+            }
+          }
+        })
+
+        .state('home.stats', {
           url: '/statistics',
-          templateUrl: 'app/stats/statistics.html',
-          controller: 'StatsController',
-          controllerAs: 'Stats'
+          views: {
+            'container@': {
+              templateUrl: 'app/stats/statistics.html',
+              controller: 'StatsController',
+              controllerAs: 'Stats'
+            }
+          }
         });
 
     });
