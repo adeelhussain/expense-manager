@@ -12,14 +12,13 @@ import Category from './category.model';
  * @param cb
  */
 function create(categoryData, userId, cb) {
-  let category = _validateCategoryData(categoryData);
+  let categories = _validateCategoryData(categoryData);
 
-  //TODO: Add validations
-  category.user = userId;
-
-  Category.create(category, function (err, category) {
+  let processedData = _processCategoryData(userId, categories);
+    console.log
+  Category.create(processedData, function (err, category) {
     if (err) {
-     return cb(err, null);
+      return cb(err, null);
     }
 
     cb(null, category);
@@ -31,6 +30,7 @@ function create(categoryData, userId, cb) {
  * Load categoryByName
  * @param userId
  * @param keyword
+ * @param cb
  */
 function findByKeyword(userId, keyword, cb) {
   var name = new RegExp(keyword, 'i');
@@ -79,8 +79,33 @@ function getUserCategory(userId, categoryId, cb) {
   });
 }
 
+/**
+ * Validate category data
+ * @param categoryData
+ * @returns {*}
+ * @private
+ */
 function _validateCategoryData(categoryData) {
   //TODO: Validate category data
+  return categoryData;
+}
+
+/**
+ * Process categories data
+ * @param userId
+ * @param categoryData
+ * @returns {*}
+ * @private
+ */
+function _processCategoryData(userId, categoryData) {
+  if (!categoryData) return [];
+
+  categoryData = categoryData.map(function (category) {
+    category.user = userId;
+
+    return category;
+  })
+
   return categoryData;
 }
 

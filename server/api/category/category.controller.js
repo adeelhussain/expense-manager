@@ -48,11 +48,8 @@ export function getUserCategory(req, res) {
  */
 export function create(req, res) {
   let user = req.user;
-  let categoryData = {
-    name: req.body.name
-  };
 
-  CategoryService.create(categoryData, user._id, function (err, category) {
+  CategoryService.create(req.body.categories, user._id, function (err, category) {
     if (err) {
       return res.status(500).json(err.message);
     }
