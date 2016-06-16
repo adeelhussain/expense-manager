@@ -13,6 +13,17 @@
           next.referrer = current.name;
         }
       });
+    })
+
+    .config(function (toastrConfig) {
+
+      //Toastr Config set here
+
+      angular.extend(toastrConfig, {
+        autoDismiss: true,
+        maxOpened: 1
+      });
+
     });
 
 }
