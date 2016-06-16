@@ -12,6 +12,7 @@
 
 
       this.addingNew = false;
+      this.isRequestInProgress = false;
 
       //Default data of a entry
       this.emptyForm();
@@ -22,7 +23,7 @@
           this.entries = expenses.data;
         },
           err => {
-          this.toastr.error((err || 'Error in getting entries'), 'Error');
+          this.toastr.error(((err && err.data ) || 'Error in getting entries'), 'Error');
           console.log(err)
         }
       )
@@ -34,12 +35,14 @@
      * @param newEntry
      */
     addEntry(isValid, newEntry) {
-      if (!isValid) return;
+      if (!isValid || this.isRequestInProgress) return;
+
+      this.isRequestInProgress = true;
 
       //TODO: validate expense data
       this.expenseService.addExpenseEntry(newEntry)
         .then(resp => {
-
+          this.isRequestInProgress = false;
           //Empty the form
           this.toggleAddEntry();
 
@@ -50,10 +53,10 @@
 
         },
           err => {
-
+            this.isRequestInProgress = false;
           //TODO: Show Errors
           console.log(err)
-          this.toastr.error((err || 'Error in adding entry'), 'Error');
+          this.toastr.error(((err && err.data ) || 'Error in adding entry'), 'Error');
 
         }
       )
@@ -89,7 +92,7 @@
         },
           err => {
 
-          this.toastr.error((err || 'Error in updating entry'), 'Error');
+          this.toastr.error(((err && err.data) || 'Error in updating entry'), 'Error');
           console.log(err)
         }
       )
