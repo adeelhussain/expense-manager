@@ -23,6 +23,6 @@ let ExpenseSchema = new mongoose.Schema({
     }
 
   },
-  {timeStamps: true});
+  {timestamps: true});
 
 export default mongoose.model('Expense', ExpenseSchema);
