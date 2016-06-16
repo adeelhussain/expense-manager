@@ -14,25 +14,25 @@
       $stateProvider
         .state('login', {
           url: '/login',
-          templateUrl: 'app/account/login/login.html',
-          controller: 'LoginController',
-          controllerAs: 'Login'
+          views: {
+            'container@': {
+              templateUrl: 'app/account/login/login.html',
+              controller: 'LoginController',
+              controllerAs: 'Login'
+            }
+          }
+
         })
         .state('signup', {
           url: '/signup',
-          templateUrl: 'app/account/signup/signup.html',
-          controller: 'SignupController',
-          controllerAs: 'vm'
+          views: {
+            'container@': {
+              templateUrl: 'app/account/signup/signup.html',
+              controller: 'SignupController',
+              controllerAs: 'Signup'
+            }
+          }
         })
-
-        /*.state('home', {
-          abstract: true,
-          url: '/',
-          templateUrl: 'app/home/home.html',
-          controller: 'HomeController',
-          controllerAs: 'Home'
-        })*/
-
         .state('home', {
           views: {
             'nav@': {
