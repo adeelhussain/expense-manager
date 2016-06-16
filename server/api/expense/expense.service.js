@@ -24,7 +24,7 @@ function create(expenseData, userId, cb) {
       cb(err, null);
     }
 
-    cb(null, expenseEntry);
+    expenseEntry.populate('categories', cb);
   });
 
 }
@@ -90,10 +90,13 @@ function update(expenseData, userId, cb) {
         }
       }
     }, function (err, expenseEntry) {
+
       if (err) {
         return cb(err, null);
       }
-      cb(expenseEntry);
+
+      expenseEntry.populate('categories', cb);
+
     }
   )
 }
