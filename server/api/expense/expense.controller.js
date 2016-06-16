@@ -14,8 +14,9 @@ import ExpenseService from './expense.service'
 export function getUserExpenses(req, res) {
 
   let user = req.user;
+  let criteria = req.query;
 
-  ExpenseService.listUserExpenses(user._id, function (err, expenses) {
+  ExpenseService.listUserExpenses(criteria, user._id, function (err, expenses) {
     if (err) {
       res.status(500).json( err.message);
     }

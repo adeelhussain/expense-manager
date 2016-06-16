@@ -55,12 +55,19 @@ function getUserExpenseEntry(userId, expenseId, cb) {
 
 /**
  * List all expenses of a user
+ * @param criteria
  * @param userId
  * @param cb
  */
-function listUserExpenses(userId, cb) {
+function listUserExpenses(criteria, userId, cb) {
+  let start = parseInt(criteria.start || 0);
+  let limit = parseInt(criteria.limit || 10);
+  //TODO: Date filter
+
   Expense.find({user: userId})
     .sort({'createdAt': -1})
+    .limit(limit)
+    .skip(start)
     .populate('categories')
     .exec(function (err, expenseEntries) {
 
@@ -83,13 +90,13 @@ function update(expenseData, userId, cb) {
     {_id: expenseData._id},
     {
       /*$addToSet: {
-        categories: {"$each": categories}
-      },*/
+       categories: {"$each": categories}
+       },*/
       //TODO: Handle duplication later
       $set: expenseData
 
     },
-    { new: true }
+    {new: true}
     , function (err, expenseEntry) {
       if (err) {
         return cb(err, null);
