@@ -11,6 +11,7 @@
       $rootScope.$on('$stateChangeStart', function (event, next, fromParam, prev) {
 
         Auth.isLoggedIn(function (isLoggedIn) {
+          //TODO: Add validations
           var user = Auth.getCurrentUser();
           if (next.authenticate && !isLoggedIn) {
             event.preventDefault();
