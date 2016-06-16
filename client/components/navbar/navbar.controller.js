@@ -14,10 +14,17 @@ class NavbarController {
   isCollapsed = true;
   //end-non-standard
 
-  constructor(Auth) {
+  constructor(Auth, $state) {
+    this.$state = $state;
     this.isLoggedIn = Auth.isLoggedIn;
     this.isAdmin = Auth.isAdmin;
     this.getCurrentUser = Auth.getCurrentUser;
+
+  }
+
+  logout(){
+    this.Auth.logout();
+    this.$state.go('login');
   }
 }
 

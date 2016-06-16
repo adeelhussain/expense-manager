@@ -8,5 +8,6 @@ angular.module('expenseManagerApp', [
   'ui.router',
   'ui.bootstrap',
   'validation.match',
-  'ngTagsInput'
+  'ngTagsInput',
+  'toastr'
 ]);
