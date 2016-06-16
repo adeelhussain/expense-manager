@@ -76,21 +76,21 @@ function listUserExpenses(userId, cb) {
 function update(expenseData, userId, cb) {
   //TODO: Add validations, like it should be array not any other thing
   let categories = expenseData.categories;
-  delete expenseData.categories;
+  //delete expenseData.categories;
 
   expenseData.user = userId;
-
-  Expense.update(
+  Expense.findOneAndUpdate(
     {_id: expenseData._id},
     {
-      $set: expenseData,
-      $addToSet: {
-        categories: {
-          $each: expenseData.categories
-        }
-      }
-    }, function (err, expenseEntry) {
+      /*$addToSet: {
+        categories: {"$each": categories}
+      },*/
+      //TODO: Handle duplication later
+      $set: expenseData
 
+    },
+    { new: true }
+    , function (err, expenseEntry) {
       if (err) {
         return cb(err, null);
       }

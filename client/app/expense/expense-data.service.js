@@ -66,7 +66,16 @@
      * @returns {*}
      */
     addCategory(categoryData) {
-      return this.$http.post(this.categoryBasePath, categoryData);
+      return this.$http.post(this.categoryBasePath, [categoryData]);
+    }
+
+    /**
+     * Add categories
+     * @param categoriesData
+     * @returns {*}
+     */
+    addCategories(categoriesData) {
+      return this.$http.post(this.categoryBasePath, categoriesData);
     }
 
   }

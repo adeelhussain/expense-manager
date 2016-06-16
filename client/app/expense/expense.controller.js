@@ -3,31 +3,26 @@
 {
   class ExpenseController {
 
-    constructor(expenseDataService, expenseService) {
+    constructor(expenseDataService, expenseService, toastr) {
       'ngInject';
       this.expenseDataService = expenseDataService;
       this.expenseService = expenseService;
+      this.toastr = toastr;
+      //TODO: Create a service for toastr customization
+
 
       this.addingNew = false;
 
       //Default data of a entry
-      this.newEntry = {
-        name: '',
-        amount: null,
-        categories: []
-      };
+      this.emptyForm();
       this.entries = [];
 
-      /*$http.get('/api/things').then(response => {
-       this.awesomeThings = response.data;
-       });*/
       this.expenseDataService.getAllExpenses()
         .then(expenses => {
           this.entries = expenses.data;
         },
           err => {
-
-          //TODO: Show Errors
+          this.toastr.error((err || 'Error in getting entries'), 'Error');
           console.log(err)
         }
       )
@@ -40,22 +35,26 @@
      */
     addEntry(isValid, newEntry) {
       if (!isValid) return;
-      console.log(newEntry)
-      ///TODO: validate expense data
+
+      //TODO: validate expense data
       this.expenseService.addExpenseEntry(newEntry)
         .then(resp => {
-          console.log(newEntry)
 
-          newEntry._id = resp.data._id;
-          this.entries.unshift(newEntry);
+          //Empty the form
+          this.toggleAddEntry();
+
+          this.entries.unshift(resp.data);
+
           //TODO: Show success
-          alert('Added Successfully');
-          console.log(resp)
+          this.toastr.success('Entry created successfully', 'Success');
+
         },
           err => {
 
           //TODO: Show Errors
           console.log(err)
+          this.toastr.error((err || 'Error in adding entry'), 'Error');
+
         }
       )
     }
@@ -65,22 +64,32 @@
      */
     toggleAddEntry() {
       this.addingNew = !this.addingNew;
+      this.emptyForm();
     }
+
+
+    toggleEntryForm(entry) {
+      entry.isEdit = !entry.isEdit;
+
+    }
+
 
     /**
      * update entry data
-     * @param itemIndex
      * @param entryData
+     * @param itemIndex
      */
-    updateEntry(itemIndex, entryData) {
+    updateEntry(entryData, itemIndex) {
       //TODO: Process Data
-      this.expenseDataService.updateEntry(entryData)
+      this.expenseService.updateExpenseEntry(entryData)
         .then(expense => {
           this.entries[itemIndex] = expense.data;
+          this.toastr.success('Entry updated successfully', 'Success');
+
         },
           err => {
 
-          //TODO: Show Errors
+          this.toastr.error((err || 'Error in updating entry'), 'Error');
           console.log(err)
         }
       )
@@ -93,16 +102,14 @@
      */
     loadCategories(keyword) {
       return this.expenseDataService.findCategory(keyword);
-      /*.then(categories => {
+    }
 
-       //this.entries[itemIndex] = expense.data;
-       },
-       err => {
-
-       //TODO: Show Errors
-       console.log(err)
-       }
-       )*/
+    emptyForm() {
+      this.newEntry = {
+        name: '',
+        amount: null,
+        categories: []
+      };
     }
 
   }
