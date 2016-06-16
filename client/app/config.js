@@ -5,14 +5,22 @@
   'use strict';
 
   angular.module('expenseManagerApp')
-    .run(function ($rootScope) {
+    .run(function ($rootScope, Auth, $state) {
 
       //TODO: Dont allow user to acces secure pages
-      $rootScope.$on('$stateChangeStart', function (event, next, nextParams, current) {
-        if (next.name === 'logout' && current && current.name && !current.authenticate) {
-          next.referrer = current.name;
-        }
+      $rootScope.$on('$stateChangeStart', function (event, next, fromParam, prev) {
+
+        Auth.isLoggedIn(function (isLoggedIn) {
+          var user = Auth.getCurrentUser();
+          if (next.authenticate && !isLoggedIn) {
+            event.preventDefault();
+            $state.go('login');
+          }
+
+        });
+
       });
+
     })
 
     .config(function (toastrConfig) {
