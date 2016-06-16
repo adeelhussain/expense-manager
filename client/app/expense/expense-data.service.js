@@ -16,9 +16,11 @@
 
     /**
      * Get all expenses
+     * @param criteria
      * @returns {*}
      */
-    getAllExpenses() {
+     getAllExpenses(criteria) {
+      //TODO: Parse filter
       return this.$http.get(this.basePath);
     }
 

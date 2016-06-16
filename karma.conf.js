@@ -22,6 +22,7 @@ module.exports = function(config) {
       'client/bower_components/angular-ui-router/release/angular-ui-router.js',
       'client/bower_components/angular-validation-match/dist/angular-validation-match.min.js',
       'client/bower_components/ng-tags-input/ng-tags-input.js',
+      'client/bower_components/angular-toastr/dist/angular-toastr.tpls.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'client/app/app.js',
