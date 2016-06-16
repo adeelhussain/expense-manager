@@ -39,7 +39,7 @@
         return category._id;
       });
 
-      if(isNew){
+      if (isNew) {
         return this.expenseDataService.addExpenseEntry(expenseData)
       }
       else {
@@ -92,6 +92,30 @@
           }
         )
       }
+    }
+
+    generateExpenseReportForCategories(criteria) {
+      return this.expenseDataService.getAllExpenses(criteria)
+        .then(
+        (resp) => {
+          //TODO: Right now same category amount is added duplicate, need to handle that later
+          let categoriesHash = [];
+          let data = [];
+          let chartIndexHash = {};
+          resp.data.forEach((exp) => {
+              exp.categories.forEach((cat) => {
+                var currentIndex = (chartIndexHash[cat.name] = chartIndexHash[cat.name] || data.length+1)-1;
+                data[currentIndex] = (data[currentIndex] || 0) + exp.amount;
+                categoriesHash[currentIndex] = cat.name;
+              })
+            }
+          );
+          return {
+            values: data,
+            labels: categoriesHash
+          }
+        }
+      )
     }
 
 

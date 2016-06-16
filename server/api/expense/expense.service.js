@@ -61,7 +61,7 @@ function getUserExpenseEntry(userId, expenseId, cb) {
  */
 function listUserExpenses(criteria, userId, cb) {
   let start = parseInt(criteria.start || 0);
-  let limit = parseInt(criteria.limit || 10);
+  let limit = parseInt(criteria.limit || 0);
   //TODO: Date filter
 
   Expense.find({user: userId})
