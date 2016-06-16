@@ -9,5 +9,6 @@ angular.module('expenseManagerApp', [
   'ui.bootstrap',
   'validation.match',
   'ngTagsInput',
-  'toastr'
+  'toastr',
+  'chart.js'
 ]);
