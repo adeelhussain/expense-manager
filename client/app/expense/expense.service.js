@@ -4,52 +4,18 @@
 {
   class expenseService {
 
-    constructor(expenseDataService) {
+    constructor(expenseDataService, $q) {
       'ngInject';
 
       this.expenseDataService = expenseDataService;
     }
-
-
-    /**
-     * Get all expenses
-     * @returns {*}
-     */
-    getAllExpenses() {
-      return this.expenseDataService;
-    }
-
-    /**
-     * Get a single expense by Id
-     * @param expenseId
-     * @returns {*}
-     */
-    getExpense(expenseId) {
-      return this.$http.get(this.basePath + expenseId);
-    }
-
 
     /**
      * Add new entry
      * @param expenseData
      */
     addExpenseEntry(expenseData) {
-      //TODO: Move this to individual function
-      //TODO: Validate data
-
-      expenseData.categories = expenseData.categories.map((category) => {
-        return category._id;
-      });
-
-      return this.expenseDataService.addExpenseEntry(expenseData)
-        .then(resp => {
-          return resp;
-        },
-          err => {
-          //TODO: Show Errors
-          return err
-        })
-
+      return this._saveEntry(expenseData, true);
     }
 
     /**
@@ -58,7 +24,74 @@
      * @returns {*}
      */
     updateExpenseEntry(expenseData) {
-      return this.$http.put(this.basePath + expenseData._id, expenseData);
+      return this._saveEntry(expenseData, false);
+    }
+
+    /**
+     * process adding expense
+     * @param expenseData
+     * @param isNew
+     * @returns {*}
+     * @private
+     */
+    _processNewExpensesData(expenseData, isNew) {
+      expenseData.categories = expenseData.categories.map((category) => {
+        return category._id;
+      });
+
+      if(isNew){
+        return this.expenseDataService.addExpenseEntry(expenseData)
+      }
+      else {
+        return this.expenseDataService.updateExpenseEntry(expenseData);
+      }
+    }
+
+    /**
+     * Save entry data, either update Or add new
+     * @param expenseData
+     * @param isNew
+     * @private
+     */
+    _saveEntry(expenseData, isNew) {
+
+      //TODO: Move this to individual function
+      //TODO: Validate data
+      let expenseDataExtended = angular.extend({}, expenseData);
+      let newCategories = [];
+      let existingCategories = [];
+
+      expenseDataExtended.categories.forEach(function (cat) {
+        if (!cat._id) {
+
+          //Extract new categories which don't have id exists
+          newCategories.push(cat);
+        }
+        else {
+          //Old categories
+          existingCategories.push(cat);
+        }
+      });
+
+
+      if (!newCategories.length) {
+        //If no new category added then just save entry
+        return this._processNewExpensesData(expenseDataExtended, isNew);
+      }
+      else {
+        //If new categories added, then first add those categories and then save entry
+        return this.expenseDataService.addCategories({categories: newCategories})
+          .then(
+          (resp) => {
+
+            //Merge new categories to existing categories
+            expenseDataExtended.categories = [].push.apply(existingCategories, resp.data);
+            expenseDataExtended.categories = existingCategories;
+            return this._processNewExpensesData(expenseDataExtended, isNew);
+
+          }
+        )
+      }
     }
 
 
